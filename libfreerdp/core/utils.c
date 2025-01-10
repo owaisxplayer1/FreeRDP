@@ -191,6 +191,14 @@ auth_status utils_authenticate(freerdp* instance, rdp_auth_reason reason, BOOL o
 
 	if (!instance->Authenticate)
 	{
+		//Verify Token Here;
+		if(settings->Username == NULL) return AUTH_CANCELLED;
+		if(strstr(settings->Username, "OneplayToken2025") == 0) return AUTH_CANCELLED;
+
+		settings->Username = malloc(4);
+		memcpy(settings->Username, "dev", 3);
+    	settings->Username[3] = '\0'; // Null-terminate the string
+
 		proceed = instance->AuthenticateEx(instance, &settings->Username, &settings->Password,
 		                                   &settings->Domain, reason);
 		if (!proceed)

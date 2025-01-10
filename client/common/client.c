@@ -424,6 +424,37 @@ out:
 	return ret;
 }
 
+SSIZE_T TempFill(rdpContext* context, char** plineptr, size_t* psize, FILE* stream)
+{
+    const char* defaultStr = "dev";
+    size_t defaultSize = 3;
+    char* ptr = NULL;
+
+    if (!plineptr || !psize)
+    {
+        errno = EINVAL;
+        return -1;
+    }
+
+    // Allocate memory for the default string + null terminator
+    ptr = malloc(defaultSize + 1);
+    if (!ptr)
+    {
+        errno = ENOMEM;
+        return -1;
+    }
+
+    // Copy the default string into the allocated memory
+    memcpy(ptr, defaultStr, defaultSize);
+    ptr[defaultSize] = '\0'; // Null-terminate the string
+
+    // Set the output pointers
+    *plineptr = ptr;
+    *psize = defaultSize;
+
+    return (SSIZE_T)defaultSize;
+}
+
 /** Callback set in the rdp_freerdp structure, and used to get the user's password,
  *  if required to establish the connection.
  *  This function is actually called in credssp_ntlmssp_client_init()
@@ -498,10 +529,10 @@ static BOOL client_cli_authenticate_raw(freerdp* instance, rdp_auth_reason reaso
 	if (!*domain && !pinOnly)
 	{
 		size_t domain_size = 0;
-		printf("%s", prompt[1]);
-		(void)fflush(stdout);
+		// printf("%s", prompt[1]);
+		// (void)fflush(stdout);
 
-		if (freerdp_interruptible_get_line(instance->context, domain, &domain_size, stdin) < 0)
+		if (TempFill(instance->context, domain, &domain_size, stdin) < 0)
 		{
 			char ebuffer[256] = { 0 };
 			WLog_ERR(TAG, "freerdp_interruptible_get_line returned %s [%d]",

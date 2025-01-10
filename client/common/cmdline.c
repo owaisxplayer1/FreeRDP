@@ -2268,7 +2268,7 @@ static int parse_gfx_options(rdpSettings* settings, const COMMAND_LINE_ARGUMENT_
 			rc = COMMAND_LINE_ERROR;
 		else
 		{
-			BOOL GfxH264 = FALSE;
+			BOOL GfxH264 = TRUE;
 			BOOL GfxAVC444 = FALSE;
 			BOOL RemoteFxCodec = FALSE;
 			BOOL GfxProgressive = FALSE;

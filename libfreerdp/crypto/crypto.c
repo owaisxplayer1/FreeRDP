@@ -214,7 +214,7 @@ char* crypto_read_pem(const char* WINPR_RESTRICT filename, size_t* WINPR_RESTRIC
 		goto fail;
 
 	const size_t fr = fread(pem, (size_t)size, 1, fp);
-	if (fr != 1)
+	if (ferror(fp))
 		goto fail;
 
 	if (plength)
