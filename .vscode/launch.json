@@ -1,0 +1,63 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FreeRDP",
+
+            // "type": "cppdbg",
+            "type": "lldb",
+            "request": "launch",
+            "program": "D:/Owais/RDP/FreeRDP/build/freerdp-build/wfreerdp.exe",
+            
+            "args": ["/v:49.45.154.138:5802"],
+            "cwd": "D:/Owais/RDP/FreeRDP/build/freerdp-build/",
+        },
+        {
+            "name": "FreeRDP-PROXY",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/dev1/freerdp/FreeRDP/build/freerdp-build/server/proxy/cli/freerdp-proxy",
+            
+            "args": ["/home/dev1/freerdp/FreeRDP/build/freerdp-build/server/proxy/cli/config.ini"],
+            "cwd": "/home/dev1/freerdp/FreeRDP/build/freerdp-build/server/proxy/cli/",
+            "miDebuggerPath": "/usr/bin/gdb",  // Make sure GDB is installed
+            "sourceFileMap": {
+                "/home/dev1/freerdp/FreeRDP/": "${workspaceFolder}"  // Path to the source code
+            },
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "MIMode": "gdb",
+        },
+        {
+            "name": "WebRTCServer",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/Debug/WebRTCServer",  // Path to the built executable
+            "args": [],  // If your program requires arguments, specify them here
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/out/Debug/",  // The working directory (where the executable resides)
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build WebRTCServer",
+            "miDebuggerPath": "/usr/bin/gdb",  // Make sure GDB is installed
+            "sourceFileMap": {
+                "/home/dev2/owais/WEBRTC/webrtc-checkout/src": "${workspaceFolder}"  // Path to the source code
+            },
+            "miDebuggerArgs": "",
+            "logging": {
+                "trace": true,
+                "engineLogging": true,
+                "programOutput": true,
+                "exceptions": true
+            }
+        },
+    ]
+}

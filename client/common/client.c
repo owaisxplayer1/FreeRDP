@@ -547,19 +547,19 @@ static BOOL client_cli_authenticate_raw(freerdp* instance, rdp_auth_reason reaso
 		}
 	}
 
-	if (!*password)
-	{
-		*password = calloc(password_size, sizeof(char));
+	// if (!*password)
+	// {
+	// 	*password = calloc(password_size, sizeof(char));
 
-		if (!*password)
-			goto fail;
+	// 	if (!*password)
+	// 		goto fail;
 
-		const BOOL fromStdin =
-		    freerdp_settings_get_bool(instance->context->settings, FreeRDP_CredentialsFromStdin);
-		if (freerdp_passphrase_read(instance->context, prompt[2], *password, password_size,
-		                            fromStdin) == NULL)
-			goto fail;
-	}
+	// 	const BOOL fromStdin =
+	// 	    freerdp_settings_get_bool(instance->context->settings, FreeRDP_CredentialsFromStdin);
+	// 	if (freerdp_passphrase_read(instance->context, prompt[2], *password, password_size,
+	// 	                            fromStdin) == NULL)
+	// 		goto fail;
+	// }
 
 	return TRUE;
 fail:

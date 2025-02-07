@@ -34,6 +34,7 @@
 #include "utils.h"
 
 #include "../core/rdp.h"
+#include <curl/curl.h>
 
 BOOL utils_str_copy(const char* value, char** dst)
 {
@@ -133,6 +134,54 @@ auth_status utils_authenticate_gateway(freerdp* instance, rdp_auth_reason reason
 	return AUTH_SUCCESS;
 }
 
+bool VerifyToken(){
+    CURL *curl;
+    CURLcode res;
+
+    // JSON body to send
+    const char *json_data = "{\"token\": \"4646e452215bce8888e43c8e1a387977e3bf0fc9062dabb78c2a65828f1dce29\"}";
+
+	char response_data[40960] = "";  // Buffer to store the response
+
+    // Initialize CURL
+    curl_global_init(CURL_GLOBAL_DEFAULT);
+    curl = curl_easy_init();
+
+    if(curl) {
+        // Set URL for the POST request
+        curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:47993/v2/verify_rdp");
+
+        // // Set the POST data (JSON body)
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data);
+
+		// curl_easy_setopt(curl, CURLOPT_WRITEDATA, response_data);  // Provide the buffer to store the response
+
+        // Set the Content-Type header for JSON
+        // struct curl_slist *headers = NULL;
+        // headers = curl_slist_append(headers, "Content-Type: application/json");
+        // curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+        // Perform the request and check for errors
+        curl_easy_perform(curl);
+
+        // if (res != CURLE_OK) {
+        //     fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        // } else {
+        //     // Print the response body stored in response_data
+            // printf("Response Body: %s\n", response_data);
+        // }
+
+        // Clean up
+        // curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+    }
+
+    // Global curl cleanup
+    curl_global_cleanup();
+
+    return 0;
+}
+
 auth_status utils_authenticate(freerdp* instance, rdp_auth_reason reason, BOOL override)
 {
 	rdpSettings* settings = NULL;
@@ -192,12 +241,14 @@ auth_status utils_authenticate(freerdp* instance, rdp_auth_reason reason, BOOL o
 	if (!instance->Authenticate)
 	{
 		//Verify Token Here;
-		if(settings->Username == NULL) return AUTH_CANCELLED;
-		if(strstr(settings->Username, "OneplayToken2025") == 0) return AUTH_CANCELLED;
+		// if(settings->Username == NULL) return AUTH_CANCELLED;
 
-		settings->Username = malloc(4);
-		memcpy(settings->Username, "dev", 3);
-    	settings->Username[3] = '\0'; // Null-terminate the string
+		// VerifyToken();
+		// if(strstr(settings->Username, "OneplayToken2025") == 0) return AUTH_CANCELLED;
+
+		// settings->Username = malloc(4);
+		// memcpy(settings->Username, "dev", 3);
+    	// settings->Username[3] = '\0'; // Null-terminate the string
 
 		proceed = instance->AuthenticateEx(instance, &settings->Username, &settings->Password,
 		                                   &settings->Domain, reason);

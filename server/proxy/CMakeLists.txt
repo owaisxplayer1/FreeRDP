@@ -51,7 +51,9 @@ addtargetwithresourcefile(${MODULE_NAME} FALSE "${FREERDP_VERSION}" ${MODULE_PRE
 
 set(PRIVATE_LIBS freerdp-client freerdp-server)
 
-set(PUBLIC_LIBS winpr freerdp)
+
+find_package(CURL REQUIRED)
+set(PUBLIC_LIBS winpr freerdp CURL::libcurl)
 
 target_include_directories(${MODULE_NAME} INTERFACE $<INSTALL_INTERFACE:include>)
 target_link_libraries(${MODULE_NAME} PRIVATE ${PRIVATE_LIBS} PUBLIC ${PUBLIC_LIBS})
